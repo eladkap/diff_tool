@@ -29,6 +29,7 @@ def primitive_test():
 def both_objects_none_test():
     diff_tool = DiffTool()
     changes = diff_tool.diff_objects(None, None)
+    print(changes)
     assert changes == [NOT_CHANGED]
 
 
@@ -132,5 +133,5 @@ if __name__ == '__main__':
     both_objects_primitive_diff_type()
     diff_lists_tests()
     example_test1()
-    # diff_lists_complex_add()
-    # diff_lists_complex_remove()
+    diff_lists_complex_add()
+    diff_lists_complex_remove()

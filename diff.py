@@ -12,12 +12,13 @@ class DiffTool:
         return type(old_object) == type(new_object)
 
     def diff_primitives(self, old_object, new_object, attribute, level) -> str:
+        attr_str = f'- Attribute: {attribute}' * (level > 0)
         if not self.have_same_type(old_object, new_object):
-            return f"{' ' * level * 2}- Attribute: {attribute} - {TYPE_CHANGE}: {type(old_object).__name__} -> {type(new_object).__name__}"
+            return f"{' ' * level * TAB_SIZE}{attr_str} - {TYPE_CHANGE}: {type(old_object).__name__} -> {type(new_object).__name__}"
         if old_object == new_object:
-            return f"{' ' * level * 2}- Attribute: {attribute} - {NOT_CHANGED}"
+            return f"{' ' * level * TAB_SIZE}{attr_str} - {NOT_CHANGED}"
         else:
-            return f"{' ' * level * 2}- Attribute: {attribute} - {VALUE_CHANGE}: {old_object} -> {new_object}"
+            return f"{' ' * level * TAB_SIZE}{attr_str} - {VALUE_CHANGE}: {old_object} -> {new_object}"
 
     def convert_object_to_dictionary(self, obj):
         if isinstance(obj, dict):
@@ -37,9 +38,11 @@ class DiffTool:
 
     def diff_objects_aux(self, old_object, new_object, attribute, level, changes):
         # Objects are not the same type
+        attr_str = f'- Attribute: {attribute} - ' * (level > 0)
+
         if not self.have_same_type(old_object, new_object):
             changes.append(
-                f"{' ' * level * 2}- Attribute: {attribute} - {TYPE_CHANGE}: {type(old_object).__name__} -> {type(new_object).__name__}")
+                f"{' ' * level * TAB_SIZE}{attr_str} - {TYPE_CHANGE}: {type(old_object).__name__} -> {type(new_object).__name__}")
             return
 
         # Primitive objects
@@ -48,7 +51,7 @@ class DiffTool:
             return
 
         # Complex objects
-        changes.append(f"{' ' * level * 2}- Attribute {attribute} - {COMPLEX_CHANGE}")
+        changes.append(f"{' ' * level * 2}{attr_str}{COMPLEX_CHANGE}")
 
         # Convert object to dictionary (object can be list/tuple/set/class/dictionary
         old_dict = self.convert_object_to_dictionary(old_object)
@@ -59,11 +62,13 @@ class DiffTool:
 
         for old_attr in old_keys:
             if old_attr not in new_keys:
-                changes.append(f"{' ' * level * 2}- Attribute {old_attr} - {REMOVED_CHANGE}: {old_dict[old_attr]}")
+                old_attr_str = f'- Attribute: {old_attr}' * (level > 0)
+                changes.append(f"{' ' * level * TAB_SIZE}{old_attr_str}{REMOVED_CHANGE}: {old_dict[old_attr]}")
 
         for new_attr in new_keys:
             if new_attr not in old_keys:
-                changes.append(f"{' ' * level * 2}- Attribute {new_attr} - {ADDED_CHANGE}: {new_dict[new_attr]}")
+                new_attr_str = f'- Attribute: {new_attr}' * (level > 0)
+                changes.append(f"{' ' * level * TAB_SIZE}{new_attr_str}{ADDED_CHANGE}: {new_dict[new_attr]}")
 
         for attr in old_keys:
             if attr in new_keys:

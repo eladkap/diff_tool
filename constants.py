@@ -14,3 +14,4 @@ PRIMITIVE_TYPES = [
     bool
 ]
 
+TAB_SIZE = 2

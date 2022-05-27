@@ -17,11 +17,18 @@ if __name__ == '__main__':
     diff_tool = DiffTool()
     a_instance = A(attr_a=5, attr_b='dfdf', attr_c=B(attr_c=4))
     b_instance = A(attr_a=6, attr_b=5, attr_c=B(attr_c=5))
-    # changes = diff_tool.diff_objects(a_instance, b_instance)
+    changes = diff_tool.diff_objects(a_instance, b_instance)
+
+    for change in changes:
+        print(change)
+
 
     list1 = [1, 2, [1, 'three', a_instance], 5.5, 7]
     list2 = [1, 3, [2, 3, b_instance], 'hi']
-    # changes = diff_tool.diff_objects(list1, list2)
+    changes = diff_tool.diff_objects(list1, list2)
+
+    for change in changes:
+        print(change)
 
     list1 = [1, 2, [1, 'three', True], 5.5]
     list2 = [1, 3, [2, 3, 'xxx'], 'hi', 8]
